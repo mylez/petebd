@@ -112,7 +112,7 @@ func styleForTile(tile rune) tcell.Style {
 		return styleDefault.Foreground(tcell.NewRGBColor(90, 90, 90))
 	case '~':
 		// defibrillator
-        return styleDefault.Foreground(tcell.ColorRed)
+		return styleDefault.Foreground(tcell.ColorRed)
 	case '&':
 		// stuffed animal
 		return styleDefault.Foreground(tcell.ColorBrown)

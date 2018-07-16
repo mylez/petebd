@@ -1,15 +1,15 @@
 package petebd
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/gdamore/tcell"
 	"math"
 	"math/rand"
+	"os"
+	"strconv"
+	"strings"
 	"time"
-    "bufio"
-    "os"
-    "strings"
-    "strconv"
 )
 
 var (

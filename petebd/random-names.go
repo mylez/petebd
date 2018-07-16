@@ -3,7 +3,7 @@ package petebd
 import "math/rand"
 
 func randomName() string {
-    return randomNames[rand.Int()%len(randomNames)]
+	return randomNames[rand.Int()%len(randomNames)]
 }
 
 var randomNames []string = []string{

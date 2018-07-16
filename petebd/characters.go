@@ -81,10 +81,6 @@ type character struct {
 
 func inviteStrangers(n int) {
 	for i := 0; i < n; i++ {
-		g := "F"
-		if rand.Int()%2 == 0 {
-			g = "M"
-		}
 		n := randomName()
 		c := randomizedCharacter(n, g)
 		nonPlayableCharacters = append(nonPlayableCharacters, c)

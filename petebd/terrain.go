@@ -25,11 +25,9 @@ func renderMap(screen tcell.Screen) {
 	if w > mapWidth {
 		w = mapWidth
 	}
-
 	if h > mapHeight {
 		h = mapHeight
 	}
-
 	for x := 0; x < w; x++ {
 		for y := 0; y < h; y++ {
 			r := getMapTile(x, y)
@@ -40,7 +38,6 @@ func renderMap(screen tcell.Screen) {
 
 func isWalkable(x, y int) bool {
 	mt := getMapTile(x, y)
-
 	for _, npc := range nonPlayableCharacters {
 		if npc.PosX == x && npc.PosY == y {
 			return false

@@ -20,14 +20,14 @@ var (
 func printEllipsis() {
 	for i := 0; i < 3; i++ {
 		fmt.Print(".")
-		time.Sleep(time.Second)
+		//time.Sleep(time.Second)
 	}
 	fmt.Println()
 }
 
 func charactersInit() {
 	peteCharacter = randomizedCharacter("Pete", "M")
-	peteCharacter.Color = tcell.ColorWhite
+	peteCharacter.Style = styleDefault
 
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Invite family and friends? y/n: ")
@@ -76,17 +76,23 @@ type character struct {
 	Name       string
 	Gender     string
 	PosX, PosY int
-	Color      tcell.Color
+	Style      tcell.Style
 }
 
 func inviteStrangers(n int) {
 	for i := 0; i < n; i++ {
 		n := randomName()
+		g := "F"
+
+		if rand.Int()%2 == 0 {
+			g = "M"
+		}
+
 		c := randomizedCharacter(n, g)
 		nonPlayableCharacters = append(nonPlayableCharacters, c)
 
 		fmt.Printf("inviting a total stranger named %s.\n", c.Name)
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(1 * time.Millisecond)
 	}
 }
 
@@ -114,7 +120,7 @@ func inviteFamilyAndFriends() {
 	} {
 
 		fmt.Printf("inviting %s.\n", info.Name)
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(1 * time.Millisecond)
 		nonPlayableCharacters = append(nonPlayableCharacters, randomizedCharacter(info.Name, info.Gender))
 	}
 }
@@ -128,7 +134,7 @@ func randomizedCharacter(name, gender string) *character {
 	c := &character{
 		Name:   name,
 		Gender: gender,
-		Color:  tcell.NewRGBColor(r, g, b)}
+		Style:  styleDefault.Foreground(tcell.NewRGBColor(r, g, b))}
 
 	for {
 		x := rand.Int() % mapWidth
@@ -161,8 +167,8 @@ func (c *character) isNearby(r rune) bool {
 			return true
 		}
 	}
-	return false
 
+	return false
 }
 
 func (c *character) move(x, y int) {
@@ -186,9 +192,9 @@ func (c *character) detectBumps() {
 
 func characterAIHandler(doRender chan MessageDoRender, doQuit chan MessageDoQuit) {
 	for {
-		updateNpcAi()
+		updateNonPlayableAI()
 		doRender <- MessageDoRender{}
-		time.Sleep(3 * time.Second)
+		time.Sleep(1776 * time.Millisecond)
 	}
 }
 
@@ -216,7 +222,7 @@ func activateNearby(c *character) {
 	}
 }
 
-func updateNpcAi() {
+func updateNonPlayableAI() {
 	for _, c := range nonPlayableCharacters {
 		c.move(rand.Int()%4-2, rand.Int()%4-2)
 
@@ -236,18 +242,22 @@ func playerHandleKeyEvent(key *tcell.EventKey) {
 	case tcell.KeyRight:
 		peteCharacter.move(1, 0)
 	}
+	switch key.Rune() {
+	case 's':
+		somebodySays(peteCharacter, randomQuote())
+	case 'r':
+		somebodySays(peteCharacter, randomRage())
+	}
 	peteCharacter.detectBumps()
 }
 
 func renderCharacter(screen tcell.Screen, c *character) {
-	s := styleDefault.Foreground(c.Color)
-	screen.SetCell(c.PosX, c.PosY, s, '@')
+	screen.SetCell(c.PosX, c.PosY, c.Style, '@')
 }
 
 func renderCharacters(screen tcell.Screen) {
 	for _, c := range nonPlayableCharacters {
 		renderCharacter(screen, c)
 	}
-	s := styleDefault.Foreground(peteCharacter.Color)
-	screen.SetCell(peteCharacter.PosX, peteCharacter.PosY, s, '@')
+	screen.SetCell(peteCharacter.PosX, peteCharacter.PosY, peteCharacter.Style, '@')
 }

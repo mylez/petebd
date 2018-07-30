@@ -3,7 +3,7 @@ package petebd
 import "github.com/gdamore/tcell"
 
 func makeRuneMatrix(w, h int, initial rune) [][]rune {
-	m := [][]rune{}
+	var m [][]rune
 
 	for y := 0; y < h; y++ {
 		m = append(m, []rune{})

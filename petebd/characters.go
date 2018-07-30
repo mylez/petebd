@@ -20,7 +20,7 @@ var (
 func printEllipsis() {
 	for i := 0; i < 3; i++ {
 		fmt.Print(".")
-		//time.Sleep(time.Second)
+		time.Sleep(250*time.Millisecond)
 	}
 	fmt.Println()
 }
@@ -92,7 +92,7 @@ func inviteStrangers(n int) {
 		nonPlayableCharacters = append(nonPlayableCharacters, c)
 
 		fmt.Printf("inviting a total stranger named %s.\n", c.Name)
-		time.Sleep(1 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 }
 
@@ -120,7 +120,7 @@ func inviteFamilyAndFriends() {
 	} {
 
 		fmt.Printf("inviting %s.\n", info.Name)
-		time.Sleep(1 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		nonPlayableCharacters = append(nonPlayableCharacters, randomizedCharacter(info.Name, info.Gender))
 	}
 }
